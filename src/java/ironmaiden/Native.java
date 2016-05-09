@@ -6,14 +6,14 @@ import java.io.Closeable;
 public class Native {
   public static native void hello();
 
-  private static native int sendEvent(int fd, int type, int code, int value);
-  private static native int newUInput();
-  private static native int destroyUInput(int fd);
-  private static native int setupDevice(String path);
-  private static native void closeDevice(int fd);
+  public static native int sendEvent(int fd, int type, int code, int value);
+  public static native int newUInput();
+  public static native int destroyUInput(int fd);
+  public static native int setupDevice(String path);
+  public static native void closeDevice(int fd);
 
 
-  class UInput implements Closeable {
+  public class UInput implements Closeable {
     private int fd = 0;
 
     UInput() {
@@ -30,7 +30,7 @@ public class Native {
     }
   }
 
-  class Device implements Closeable {
+  public class Device implements Closeable {
     private int fd = 0;
 
     Device(String path) {
