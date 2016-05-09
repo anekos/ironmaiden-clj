@@ -87,8 +87,23 @@ JNIEXPORT jint JNICALL Java_ironmaiden_Native_destroyUInputDevice
 (JNIEnv *env, jclass klass, jint fd) {
   if (ioctl(fd, UI_DEV_DESTROY) < 0)
     die("destroy_uinput_device: ioctl");
+  close(fd);
 }
 
 void setup_input_device (int fd) {
   ioctl(fd, EVIOCGRAB, 1);
+}
+
+JNIEXPORT jint JNICALL Java_ironmaiden_Native_setupInputDevice
+(JNIEnv *env, jclass klass, jstring _path) {
+  const char *path = (*env)->GetStringUTFChars(env, _path, NULL);
+  int fd = open(path, O_RDONLY);
+  (*env)->ReleaseStringUTFChars(env, _path, path);
+  setup_input_device(fd);
+  return fd;
+}
+
+JNIEXPORT void JNICALL Java_ironmaiden_Native_closeInputDevice
+(JNIEnv *env, jclass klass, jint fd) {
+  close(fd);
 }
