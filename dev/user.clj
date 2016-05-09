@@ -1,7 +1,8 @@
 (ns user
   (:import (ironmaiden Native))
   (:require [clojure.tools.namespace.repl :refer [refresh]]
-            [clojure.pprint :refer [pp pprint cl-format]]))
+            [clojure.pprint :refer [pp pprint cl-format]]
+            [ironmaiden.device.uinput :refer :all]))
 
 
 (defn init []
