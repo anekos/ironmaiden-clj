@@ -40,7 +40,7 @@ void ioctl_set (int fd, int set, int value) {
     die("error: ioctl set");
 }
 
-void setup_uinput_device (int fd) {
+void setup_uinput (int fd) {
   ioctl_set(fd, UI_SET_EVBIT, EV_KEY);
   ioctl_set(fd, UI_SET_EVBIT, EV_REL);
 
@@ -58,7 +58,7 @@ void setup_uinput_device (int fd) {
   }
 }
 
-void create_uinput_device (int fd) {
+void create_uinput (int fd) {
   struct uinput_user_dev uidev;
   memset(&uidev, 0, sizeof(uidev));
 
@@ -75,35 +75,35 @@ void create_uinput_device (int fd) {
     die("create_uinput_device: ioctl");
 }
 
-JNIEXPORT jint JNICALL Java_ironmaiden_Native_newUInputDevice
+JNIEXPORT jint JNICALL Java_ironmaiden_Native_newUInput
 (JNIEnv *env, jclass klass) {
   int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
-  create_uinput_device(fd);
-  setup_uinput_device(fd);
+  create_uinput(fd);
+  setup_uinput(fd);
   return fd;
 }
 
-JNIEXPORT jint JNICALL Java_ironmaiden_Native_destroyUInputDevice
+JNIEXPORT jint JNICALL Java_ironmaiden_Native_destroyUInput
 (JNIEnv *env, jclass klass, jint fd) {
   if (ioctl(fd, UI_DEV_DESTROY) < 0)
     die("destroy_uinput_device: ioctl");
   close(fd);
 }
 
-void setup_input_device (int fd) {
+void setup_device (int fd) {
   ioctl(fd, EVIOCGRAB, 1);
 }
 
-JNIEXPORT jint JNICALL Java_ironmaiden_Native_setupInputDevice
+JNIEXPORT jint JNICALL Java_ironmaiden_Native_setupDevice
 (JNIEnv *env, jclass klass, jstring _path) {
   const char *path = (*env)->GetStringUTFChars(env, _path, NULL);
   int fd = open(path, O_RDONLY);
   (*env)->ReleaseStringUTFChars(env, _path, path);
-  setup_input_device(fd);
+  setup_device(fd);
   return fd;
 }
 
-JNIEXPORT void JNICALL Java_ironmaiden_Native_closeInputDevice
+JNIEXPORT void JNICALL Java_ironmaiden_Native_closeDevice
 (JNIEnv *env, jclass klass, jint fd) {
   close(fd);
 }
