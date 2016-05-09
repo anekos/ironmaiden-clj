@@ -78,8 +78,8 @@ void create_uinput (int fd) {
 JNIEXPORT jint JNICALL Java_ironmaiden_Native_newUInput
 (JNIEnv *env, jclass klass) {
   int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
-  create_uinput(fd);
   setup_uinput(fd);
+  create_uinput(fd);
   return fd;
 }
 
