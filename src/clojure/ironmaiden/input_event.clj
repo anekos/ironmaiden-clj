@@ -1,4 +1,4 @@
-(ns ironmaiden.device.input-type
+(ns ironmaiden.input-event
   (:require [clojure.string :as string]
             [bytebuffer.buff :refer :all]))
 

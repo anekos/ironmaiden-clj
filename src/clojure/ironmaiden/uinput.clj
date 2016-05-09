@@ -1,4 +1,4 @@
-(ns ironmaiden.device.uinput
+(ns ironmaiden.uinput
   (:import (ironmaiden Native))
   (:require [clojure.string :as string]))
 

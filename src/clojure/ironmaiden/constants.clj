@@ -1,5 +1,4 @@
-(ns ironmaiden.device.input-type
-  (:require [clojure.string :as string]))
+(ns ironmaiden.constants)
 
 
 (def header-filepath "/usr/include/linux/input-event-codes.h")
