@@ -12,5 +12,6 @@
   :java-source-paths ["src/java"]
   :source-paths ["src/clojure"]
   :jvm-opts ["-Djava.library.path=lib/"]
+  :repl-options {:init-ns user}
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
                    :source-paths ["dev"]}})
