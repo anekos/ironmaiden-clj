@@ -1,5 +1,4 @@
-(ns ironmaiden.util
-  (:require [clojure.string :as string]))
+(ns ironmaiden.util)
 
 
 #_(re-matches-case
@@ -10,12 +9,12 @@
 
 ; TODO let value
 
-(defmacro re-match-case [& clauses]
+(defmacro re-matches-case [& clauses]
   (when-let [[value clause & more] clauses]
     (if (list? clause)
       (let [[pat bindings & expr] clause]
         `(if-let [~bindings (re-matches ~pat ~value)]
            (do
              ~@expr)
-           (re-match-case ~value ~@more)))
+           (re-matches-case ~value ~@more)))
       clause)))
