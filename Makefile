@@ -20,26 +20,30 @@ INCLUDE_DIRS=$(shell find $(JAVA_HOME)/include -type d)
 INCLUDE_ARGS=$(INCLUDE_DIRS:%=-I%) -I$(C_HEADER_DIR)
 
 
-run: $(LIB_FILE) $(JAR_FILE)
+run: $(CLASS_FILE) $(LIB_FILE)
 	lein run
 
 jar: $(JAR_FILE)
 
-$(JAR_FILE): $(CLASS_FILE) lib
+$(JAR_FILE): $(CLASS_FILE)
 	lein uberjar
 
-$(CLASS_FILE): $(JAVA_FILE)
-	lein javac
+$(CLASS_FILE): $(JAVA_FILE) $(CLASS_DIR)
+	javac -d $(CLASS_DIR) src/java/ironmaiden/Native.java
 
 $(C_HEADER): $(CLASS_FILE)
 	mkdir -p $(C_HEADER_DIR)
 	javah -o $(C_HEADER) -cp $(CLASS_DIR) $(CLASS_NAME)
 
-lib: $(LIB_FILE)
-
-$(LIB_FILE): $(C_SOURCE) $(C_HEADER)
+$(LIB_FILE): $(C_SOURCE) $(C_HEADER) $(LIB_DIR)
 	mkdir -p $(LIB_DIR)
 	$(CC) $(C_SOURCE) $(INCLUDE_ARGS) -shared -o $(LIB_FILE) -fPIC
+
+$(CLASS_DIR):
+	mkdir -p $(CLASS_DIR)
+
+$(LIB_DIR):
+	mkdir $(LIB_DIR)
 
 clean:
 	lein clean
