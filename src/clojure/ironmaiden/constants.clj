@@ -23,7 +23,9 @@
            [_ name value]
            (let [sym (lispize name)]
              (when-not (resolve sym)
-               (eval `(def ~sym ~(read-string value)))))))))))
+               (intern 'ironmaiden.constants
+                       sym
+                       (read-string value))))))))))
 
 
 (init)
