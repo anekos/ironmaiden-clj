@@ -1,5 +1,6 @@
-(ns ironmaiden.input-event
-  (:require [clojure.string :as string]
+(ns ironmaiden.device.input-event
+  (:require [clojure.core.async :refer [>!! chan sliding-buffer thread]]
+            [ironmaiden.device.core :refer [*buffer-size*]]
             [bytebuffer.buff :refer :all]))
 
 
@@ -33,7 +34,7 @@
       (InputEvent. sec usec type code value))))
 
 
-(defn input-event-seq [filepath]
+#_(defn input-event-seq [filepath]
   (let [fin (java.io.FileInputStream. filepath)
         bb (byte-buffer 24)]
     (letfn [(read1 []
@@ -41,3 +42,15 @@
                 (read-input-event fin bb)
                 (lazy-seq (read1))))]
       read1)))
+
+
+(defn make-reader-channel [filepath]
+  (let [fin (java.io.FileInputStream. filepath)
+        bb (byte-buffer 24)
+        ch (chan (sliding-buffer @*buffer-size*))]
+    (thread
+      (try
+        (while (>!! ch (read-input-event fin bb)))
+        (finally
+          (.close fin))))
+    ch))
