@@ -2,6 +2,7 @@
   (:import (ironmaiden Native))
   (:require [clojure.tools.namespace.repl :refer [refresh]]
             [clojure.pprint :refer [pp pprint cl-format]]
+            [clojure.repl :refer :all]
             [ironmaiden.util :refer :all]
             [ironmaiden.uinput :refer :all]
             [ironmaiden.constants :as c]
