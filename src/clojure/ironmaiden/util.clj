@@ -13,8 +13,14 @@
   (when-let [[value clause & more] clauses]
     (if (list? clause)
       (let [[pat bindings & expr] clause]
-        `(if-let [~bindings (re-matches ~pat ~value)]
-           (do
-             ~@expr)
-           (re-matches-case ~value ~@more)))
+        (if (= 'else pat)
+          `(do ~@(rest clause))
+          `(if-let [~bindings (re-matches ~pat ~value)]
+             (do
+               ~@expr)
+             (re-matches-case ~value ~@more))))
       clause)))
+
+
+(defn compact [coll]
+  (filter (comp not nil?) coll))
