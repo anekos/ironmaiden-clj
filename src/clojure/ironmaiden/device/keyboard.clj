@@ -5,6 +5,7 @@
 
 
 (defrecord Keyboard [name ch] Device
+  (channel [this] ch)
   (stop
     [this]
     (close! ch)))

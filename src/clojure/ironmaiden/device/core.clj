@@ -5,4 +5,5 @@
 
 
 (defprotocol Device
+  (channel [this])
   (stop [this]))
