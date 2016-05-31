@@ -1,14 +1,14 @@
-(ns ironmaiden.device.keyboard
+(ns ironmaiden.device.mouse
   (:require [ironmaiden.device.core :refer [Device]]
             [ironmaiden.device.common :refer [device-common-methods]]
             [ironmaiden.device.input-event :refer [make-reader-channel]]))
 
 
-(defrecord Keyboard [name ch])
+(defrecord Mouse [name ch])
 
-(extend Keyboard Device device-common-methods)
+(extend Mouse Device device-common-methods)
 
-(defn make-keyboard [name path]
-  (->Keyboard
+(defn make-mouse [name path]
+  (->Mouse
     name
     (make-reader-channel path)))
