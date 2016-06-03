@@ -6,6 +6,7 @@
             [clojure.core.async :refer [>!! <!! chan alts!!]]
             [bytebuffer.buff :refer :all]
             [ironmaiden.util :refer :all]
+            [ironmaiden.show :refer [show]]
             [ironmaiden.uinput :refer :all]
             [ironmaiden.constants :as c]
             [ironmaiden.device.core :refer :all]
