@@ -106,11 +106,15 @@ JNIEXPORT jint JNICALL Java_ironmaiden_Native_setupDevice
 JNIEXPORT jint JNICALL Java_ironmaiden_Native_readEvent
   (JNIEnv *env, jclass klass, jint fd, jbyteArray _buf) {
 
-  jbyte* buf = (*env)->GetByteArrayElements(env, _buf, NULL);
+  jboolean isCopy;
+
+  jbyte* buf = (*env)->GetByteArrayElements(env, _buf, &isCopy);
+  if ((*env)->ExceptionCheck(env)) return 0;
 
   int sz = read(fd, buf, sizeof(struct input_event));
 
-  (*env)->ReleaseByteArrayElements(env, _buf, buf, 0);
+  (*env)->ReleaseByteArrayElements(env, _buf, buf, JNI_COMMIT);
+  if ((*env)->ExceptionCheck(env)) return 0;
 
   return sz;
 }
