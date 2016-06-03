@@ -2,6 +2,8 @@
   (:import (ironmaiden Native))
   (:require [clojure.core.async :refer [>!! chan sliding-buffer thread]]
             [bytebuffer.buff :refer :all]
+            [ironmaiden.show :refer [Show]]
+            [ironmaiden.constants :refer :all]
             [ironmaiden.device.core :refer [*buffer-size*]]))
 
 
@@ -21,8 +23,16 @@
            (value (integer 32)))))
 
 
-(defrecord InputEvent [sec usec type code value])
-
+(defrecord InputEvent [sec usec type code value] Show
+  (show
+    [{type :type code :code value :value}]
+    (str "<InputEvent "
+         (get-in value-to-symbol [:ev type] type)
+         " "
+         (get-in value-to-symbol [:key code] code)
+         " "
+         value
+         ">")))
 
 (defn read-input-event
   ([fd bb]
