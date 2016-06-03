@@ -43,7 +43,7 @@ $(CLASS_DIR):
 	mkdir -p $(CLASS_DIR)
 
 $(LIB_DIR):
-	mkdir $(LIB_DIR)
+	- mkdir $(LIB_DIR)
 
 clean:
 	lein clean
