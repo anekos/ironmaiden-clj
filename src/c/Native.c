@@ -103,6 +103,18 @@ JNIEXPORT jint JNICALL Java_ironmaiden_Native_setupDevice
   return fd;
 }
 
+JNIEXPORT jint JNICALL Java_ironmaiden_Native_readEvent
+  (JNIEnv *env, jclass klass, jint fd, jbyteArray _buf) {
+
+  jbyte* buf = (*env)->GetByteArrayElements(env, _buf, NULL);
+
+  int sz = read(fd, buf, sizeof(struct input_event));
+
+  (*env)->ReleaseByteArrayElements(env, _buf, buf, 0);
+
+  return sz;
+}
+
 JNIEXPORT void JNICALL Java_ironmaiden_Native_closeDevice
 (JNIEnv *env, jclass klass, jint fd) {
   close(fd);

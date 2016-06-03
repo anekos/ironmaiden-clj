@@ -1,7 +1,8 @@
 (ns ironmaiden.device.input-event
+  (:import (ironmaiden Native))
   (:require [clojure.core.async :refer [>!! chan sliding-buffer thread]]
-            [ironmaiden.device.core :refer [*buffer-size*]]
-            [bytebuffer.buff :refer :all]))
+            [bytebuffer.buff :refer :all]
+            [ironmaiden.device.core :refer [*buffer-size*]]))
 
 
 (comment
@@ -24,8 +25,8 @@
 
 
 (defn read-input-event
-  ([fin bb]
-    (.read fin (.array bb))
+  ([fd bb]
+    (ironmaiden.Native/readEvent fd (.array bb))
     (let [result (read-input-event bb)]
       (.rewind bb)
       result))
@@ -45,12 +46,12 @@
 
 
 (defn make-reader-channel [filepath]
-  (let [fin (java.io.FileInputStream. filepath)
+  (let [fd (ironmaiden.Native/setupDevice filepath)
         bb (byte-buffer 24)
         ch (chan (sliding-buffer @*buffer-size*))]
     (thread
       (try
-        (while (>!! ch (read-input-event fin bb)))
+        (while (>!! ch (read-input-event fd bb)))
         (finally
-          (.close fin))))
+          (ironmaiden.Native/closeDevice fd))))
     ch))

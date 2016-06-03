@@ -10,6 +10,7 @@ public class Native {
   public static native int newUInput();
   public static native int destroyUInput(int fd);
   public static native int setupDevice(String path);
+  public static native int readEvent(int fd, byte[] buf);
   public static native void closeDevice(int fd);
 
 
