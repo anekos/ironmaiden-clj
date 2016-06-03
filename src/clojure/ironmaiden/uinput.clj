@@ -1,6 +1,5 @@
 (ns ironmaiden.uinput
-  (:import (ironmaiden Native))
-  (:require [clojure.string :as string]))
+  (:import (ironmaiden Native)))
 
 
 (defn new-uinput
