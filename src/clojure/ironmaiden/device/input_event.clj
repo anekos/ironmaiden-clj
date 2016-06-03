@@ -34,12 +34,14 @@
          value
          ">")))
 
+
 (defn read-input-event
   ([fd bb]
-    (ironmaiden.Native/readEvent fd (.array bb))
-    (let [result (read-input-event bb)]
-      (.rewind bb)
-      result))
+    (if (< 0 (ironmaiden.Native/readEvent fd (.array bb)))
+      (let [result (read-input-event bb)]
+        (.rewind bb)
+        result)
+      (throw (Exception. "Could not read from the device"))))
   ([bb]
     (let [[sec usec type code value] (unpack bb "LLSSi")]
       (InputEvent. sec usec type code value))))
